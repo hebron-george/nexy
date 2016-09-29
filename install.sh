@@ -7,8 +7,13 @@ APP=nexy
 
 echo "Copying files to app directory ${APP_DIR}"
 mkdir -p ${APP_DIR}
-
 cp -u requirements.txt ${APP_DIR}
+
+echo "Configuring service"
+mkdir -p /var/log/${APP}
+mkdir -p /var/run/${APP}
+cp ./res/${APP} /etc/init.d/${APP}
+chmod u+x /etc/init.d/${APP}
 
 # Create virtualenv
 cd ${APP_DIR}
