@@ -1,0 +1,11 @@
+[example1]
+server = irc.example1.net
+port = 6667
+ssl = true
+
+
+[example2]
+server = irc.example2.org
+port = 6667
+
+
