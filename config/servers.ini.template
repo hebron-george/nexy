@@ -2,6 +2,7 @@
 server = irc.example1.net
 port = 6667
 ssl = true
+channels = #channel1, #channel2
 
 
 [example2]
