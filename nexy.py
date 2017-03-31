@@ -52,6 +52,10 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 	def do_command(self, e, cmd):
 		nick = e.source.nick
 		c = self.connection
+		print "In do_command()"
+		print "e = {}".format(e)
+		print "e.source = {}".format(e.source)
+		print "cmd = {}".format(cmd)
 
 		if cmd == "disconnect":
 			self.disconnect()
@@ -72,6 +76,11 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 			c.ctcp("DCC", nick, "CHAT chat %s %d" % (
 				ip_quad_to_numstr(dcc.localaddress),
 				dcc.localport))
+		elif cmd == "version":
+			v = self.get_version()
+			c.notice(nick, "{}".format(v))
+		elif cmd == "quote":
+			c.privmsg(e.target, "I'll find you a quote later...")
 		else:
 			c.notice(nick, "Not understood: " + cmd)
 
