@@ -11,6 +11,7 @@ jaraco.stream==1.1.2
 jaraco.text==1.9.2
 more-itertools==2.5.0
 packaging==16.8
+pluginbase==0.5
 pyparsing==2.1.10
 pytz==2016.10
 six==1.10.0
