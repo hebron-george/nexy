@@ -1,2 +1,3 @@
 config/servers.ini
 venv/*
+.DS_Store
