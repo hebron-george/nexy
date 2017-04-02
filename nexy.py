@@ -10,6 +10,7 @@
 
 import irc.bot
 import logging
+from pluginbase import PluginBase
 from ConfigParser import SafeConfigParser
 
 class NexyBot(irc.bot.SingleServerIRCBot):
@@ -27,7 +28,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 		self.do_command(e, e.arguments[0])
 
 	def on_pubmsg(self, c, e):
-		a = e.arguments[0].split(":", 1)
+		a = e.arguments[0].split(" ", 1)
 		if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()):
 			self.do_command(e, a[1].strip())
 		return
@@ -82,7 +83,10 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 		elif cmd == "quote":
 			c.privmsg(e.target, "I'll find you a quote later...")
 		else:
-			c.notice(nick, "Not understood: " + cmd)
+			c.notice(nick, "--- [nexy] help ---")
+			c.notice(nick, "To make me do something, try: nexy <command>")
+			c.notice(nick, "Some common commands:")
+			c.notice(nick, "quote - opme - weather <zip>")
 
 def main():
 	setupLogger()
