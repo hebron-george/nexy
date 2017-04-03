@@ -7,16 +7,19 @@
 """ An IRC bot.
 
 """
-
 import irc.bot
 import logging
 from pluginbase import PluginBase
 from ConfigParser import SafeConfigParser
+from Nexy.db import DB
 
 class NexyBot(irc.bot.SingleServerIRCBot):
 	def __init__(self, serversConfig):
 		irc.bot.SingleServerIRCBot.__init__(self, [('irc.freenode.net', 6667)], 'nexy', 'nexy')
 		self.channel = '#nexy'
+		self.plugin_base = PluginBase(package='nexy.plugins')
+		self.plugin_source = self.plugin_base.make_plugin_source(searchpath=['./plugins'])
+		self.db = DB()
 
 	def on_nicknameinuse(self, c, e):
 		c.nick(c.get_nickname() + "_")
