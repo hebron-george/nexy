@@ -13,8 +13,11 @@ from pluginbase import PluginBase
 from ConfigParser import SafeConfigParser
 from Nexy.db import DB
 
+logging.basicConfig(filename='nexy.log', level=logging.DEBUG)
+
 class NexyBot(irc.bot.SingleServerIRCBot):
 	def __init__(self, serversConfig):
+		logging.debug('Setting up nexy to connect to: {}...'.format(serversConfig))
 		irc.bot.SingleServerIRCBot.__init__(self, [('irc.freenode.net', 6667)], 'nexy', 'nexy')
 		self.channel = '#nexy'
 		self.plugin_base = PluginBase(package='nexy.plugins')
@@ -56,10 +59,8 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 	def do_command(self, e, cmd):
 		nick = e.source.nick
 		c = self.connection
-		print "In do_command()"
-		print "e = {}".format(e)
-		print "e.source = {}".format(e.source)
-		print "cmd = {}".format(cmd)
+		logging.debug("event = {}".format(e))
+		logging.debug("cmd = {}".format(cmd))
 
 		if cmd == "disconnect":
 			self.disconnect()
@@ -83,17 +84,29 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 		elif cmd == "version":
 			v = self.get_version()
 			c.notice(nick, "{}".format(v))
-		elif cmd == "quote":
-			c.privmsg(e.target, "I'll find you a quote later...")
 		else:
-			c.notice(nick, "--- [nexy] help ---")
-			c.notice(nick, "To make me do something, try: nexy <command>")
-			c.notice(nick, "Some common commands:")
-			c.notice(nick, "quote - opme - weather <zip>")
+			try:
+				plugin_name = self.get_plugin_name(cmd)
+				if plugin_name == None:
+					raise ImportError('get_plugin_name() returned None for input: {}'.format(cmd))
+				logging.debug("Got plugin_name = {}".format(plugin_name))
+				plugin = self.plugin_source.load_plugin(plugin_name)
+				logging.debug("This is the plugin that was loaded: {}".format(plugin))
+				plugin.run(e, c)
+			except ImportError:
+				c.notice(nick, "--- [nexy] help ---")
+				c.notice(nick, "To make me do something, try: nexy <command>")
+				c.notice(nick, "Some common commands:")
+				c.notice(nick, "quote - opme - weather <zip>")
+
+	def get_plugin_name(self, cmd):
+		filter_plugin = self.plugin_source.load_plugin('nexy_filter')
+		plugin_name = filter_plugin.filter(cmd, self.db)
+		if plugin_name == "" or plugin_name is None:
+			return None
+		return plugin_name
 
 def main():
-	setupLogger()
-	logger = logging.getLogger('nexy')
 
 	conf = SafeConfigParser()
 	conf.read('config/servers.ini')
@@ -104,6 +117,7 @@ def main():
 	nexy = NexyBot(serverPortPairs)
 
 	nexy.start()
+	logging.debug("Starting nexy...")
 
 def setupLogger():
 	logger = logging.getLogger('nexy')
@@ -135,4 +149,6 @@ def getServerPortPairs(conf):
 
 
 if __name__ == "__main__":
+	#setupLogger()
+	logger = logging.getLogger('nexy')
 	main()
