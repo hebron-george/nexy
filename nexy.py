@@ -35,7 +35,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 
 	def on_pubmsg(self, c, e):
 		a = e.arguments[0].split(" ", 1)
-		if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()):
+		if len(a) > 1 and (irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()) or irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname() + ":")):
 			self.do_command(e, a[1].strip())
 		return
 
@@ -59,8 +59,6 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 	def do_command(self, e, cmd):
 		nick = e.source.nick
 		c = self.connection
-		logging.debug("event = {}".format(e))
-		logging.debug("cmd = {}".format(cmd))
 
 		if cmd == "disconnect":
 			self.disconnect()
@@ -89,9 +87,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 				plugin_name = self.get_plugin_name(cmd)
 				if plugin_name == None:
 					raise ImportError('get_plugin_name() returned None for input: {}'.format(cmd))
-				logging.debug("Got plugin_name = {}".format(plugin_name))
 				plugin = self.plugin_source.load_plugin(plugin_name)
-				logging.debug("This is the plugin that was loaded: {}".format(plugin))
 				plugin.run(e, c)
 			except ImportError:
 				c.notice(nick, "--- [nexy] help ---")
