@@ -18,8 +18,9 @@ def get_all_filters(db):
 
 def match_command_against_filters(filters, cmd):
 	for f in filters:
-		logger.debug("Searching in filter: {}".format(f.keys()))
+		logger.debug("Searching in filter: {} --- {}".format(f['id'], f['phrase']))
 		if re.search(f['phrase'], cmd, re.IGNORECASE):
+			logger.debug("Matched {} on {}".format(cmd, f['phrase']))
 			return f
 
 def get_plugin_name_from_matched_filter(f):
