@@ -29,5 +29,5 @@ def send_register_help_message(e, conn):
 	else:
 		target = e.target
 
-	help_msg = "Register a plugin: nexy !register <plugin_id> <trigger_phrase>"
+	help_msg = "To register a plugin: nexy !register <plugin_id> <trigger_phrase>"
 	conn.privmsg(target, help_msg)

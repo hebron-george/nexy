@@ -22,6 +22,7 @@ def match_command_against_filters(filters, cmd):
 		if re.search(f['phrase'], cmd, re.IGNORECASE):
 			logger.debug("Matched {} on {}".format(cmd, f['phrase']))
 			return f
+	logger.debug("Couldn't find plugin for input: {}".format(cmd))
 
 def get_plugin_name_from_matched_filter(f):
 	return f['id']

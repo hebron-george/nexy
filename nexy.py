@@ -35,7 +35,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 
 	def on_pubmsg(self, c, e):
 		a = e.arguments[0].split(" ", 1)
-		if len(a) > 1 and (irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()) or irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname() + ":")):
+		if len(a) > 1 and (irc.strings.lower(a[0]).strip() == irc.strings.lower(self.connection.get_nickname()) or irc.strings.lower(a[0]).strip() == irc.strings.lower(self.connection.get_nickname() + ":")):
 			self.do_command(e, a[1].strip())
 		return
 
@@ -60,6 +60,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 		nick = e.source.nick
 		c = self.connection
 
+		logger = logging.getLogger("nexy.do_command")
 		if cmd == "disconnect":
 			self.disconnect()
 		elif cmd == "die":
@@ -74,11 +75,11 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 				c.notice(nick, "Opers: " + ", ".join(opers))
 				voiced = sorted(chobj.voiced())
 				c.notice(nick, "Voiced: " + ", ".join(voiced))
-		elif cmd == "dcc":
-			dcc = self.dcc_listen()
-			c.ctcp("DCC", nick, "CHAT chat %s %d" % (
-				ip_quad_to_numstr(dcc.localaddress),
-				dcc.localport))
+		#elif cmd == "dcc":
+		#	dcc = self.dcc_listen()
+		#	c.ctcp("DCC", nick, "CHAT chat %s %d" % (
+		#		ip_quad_to_numstr(dcc.localaddress),
+		#		dcc.localport))
 		elif cmd == "version":
 			v = self.get_version()
 			c.notice(nick, "{}".format(v))
@@ -90,6 +91,7 @@ class NexyBot(irc.bot.SingleServerIRCBot):
 				plugin = self.plugin_source.load_plugin(plugin_name)
 				plugin.run(e, c)
 			except ImportError:
+				#logger.error(e)
 				c.notice(nick, "--- [nexy] help ---")
 				c.notice(nick, "To make me do something, try: nexy <command>")
 				c.notice(nick, "Some common commands:")
