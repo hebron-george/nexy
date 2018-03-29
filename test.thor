@@ -29,9 +29,8 @@ class Test < Thor
     puts "Creating config for a #{project_type} project called #{project_name}"
 
     {
-        :name => name,
-        :type => type,
-        
+        :name => project_name,
+        :type => project_type,
     }
   end
 
