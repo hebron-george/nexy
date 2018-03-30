@@ -19,6 +19,10 @@ class Test < Thor
 
   private
 
+  def create_project!(project_configuration)
+
+  end
+
   def create_project_config(project_details = {})
     errors = []
     errors << :missing_project_name unless project_name = project_details[:name]
