@@ -1,11 +1,17 @@
-require "nexy/version"
+require 'thor'
+require 'nexy/version'
 
 module Nexy
-  # Your code goes here...
-  class Core < Thor
-    desc 'setup', 'Setup Nexy through a series of questions'
-    def setup
+  class ThorShell < Thor
 
+    def ask_securely(*args)
+      # TODO: Ask args and securely get response
+      STDIN.noecho(&:gets).chomp
+    end
+    desc 'setup', 'Walk through nexy configuration setup'
+    def setup
+      # config = get_current_config
+      # update_config! config
     end
 
     desc "create-ruby-app <name>", "create a new plain old Ruby project"
@@ -50,5 +56,13 @@ module Nexy
     def create_project_from_config!(config)
 
     end
+  end
+
+  def self.ui
+    @ui ||= ThorShell.new
+  end
+
+  def self.cli_root
+    File.dirname __dir__
   end
 end

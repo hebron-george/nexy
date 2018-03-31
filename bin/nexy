@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+# We are prepending the lib directory of nexy to the load path
+$:.unshift File.expand_path('../../lib', __FILE__)
+
+require 'nexy/cli'
+
+Nexy::CLI.start
