@@ -1,8 +1,9 @@
 require 'thor'
 require 'io/console'
-require 'nexy/version'
 
 module Nexy
+  require 'nexy/version'
+
   class ThorShell < Thor::Shell::Color
 
     def ask_securely(*args)
