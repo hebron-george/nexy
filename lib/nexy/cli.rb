@@ -5,10 +5,19 @@ module Nexy
   class CLI < Thor
     include Thor::Actions
 
+    desc 'version', 'Prints current nexy version'
+    def version
+      say("nexy v#{Nexy::VERSION} running Ruby v#{RUBY_VERSION} on #{RUBY_PLATFORM}")
+    end
+
     desc 'setup', 'Walk through nexy configuration setup'
-    def setup
-      # config = get_current_config
-      # update_config! config
+    long_desc <<-LONGDESC
+  nexy will walk you step-by-step through configuration in a very simple
+  question-answer format.
+    LONGDESC
+    def setup(*args)
+      require 'nexy/cli/setup'
+      Nexy::CLI::Setup.run(args)
     end
 
     desc 'create-ruby-app <name>', 'create a new plain old Ruby project'
