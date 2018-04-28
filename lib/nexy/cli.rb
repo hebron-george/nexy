@@ -20,6 +20,19 @@ module Nexy
       Nexy::CLI::Setup.run(args)
     end
 
+    desc 'create', 'Start a new project'
+    long_desc <<-LONGDESC
+      Starting a new project from scratch can be a painful task.\n
+      nexy will help you get started as quickly as possible.\n
+      Currently supports:\n
+        - Plain old Ruby\n
+        - Ruby on Rails\n
+        - Plain old Python\n
+    LONGDESC
+    def create(*args)
+
+    end
+
     desc 'create-ruby-app <name>', 'create a new plain old Ruby project'
     def create_ruby_app(name)
       type = :ruby.freeze
