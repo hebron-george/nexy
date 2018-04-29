@@ -33,6 +33,7 @@ module Nexy
 
     end
 
+    # TODO: Make these subcommands -- http://whatisthor.com/
     desc 'create-ruby-app <name>', 'create a new plain old Ruby project'
     def create_ruby_app(name)
       type = :ruby.freeze
