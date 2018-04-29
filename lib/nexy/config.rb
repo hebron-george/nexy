@@ -1,5 +1,5 @@
 require 'yaml'
-
+require 'awesome_print'
 
 module Nexy
   module Config
@@ -14,7 +14,7 @@ module Nexy
       if config_file_exists?
         @config_object ||= read_config_file
       else
-        @config_object ||= Hash.new
+        @config_object ||= default_config
       end
     end
 
@@ -24,6 +24,14 @@ module Nexy
 
     def write_config_file
       File.open(FULL_CONFIG_PATH, 'w') { |f| f.write config_object.to_yaml }
+    end
+
+    def pretty_print
+      config_object.ai
+    end
+
+    def for_each_field(&block)
+      FIELDS.each { |f| block.call(f) if block_given? }
     end
 
     # This will build all of the accessors for generic fields. If you need custom
@@ -55,7 +63,11 @@ module Nexy
     private
 
     def read_config_file
-      YAML.load_file(FULL_CONFIG_PATH)
+      YAML.load_file(FULL_CONFIG_PATH) || default_config
+    end
+
+    def default_config
+      Hash.new
     end
   end
 end
