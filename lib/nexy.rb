@@ -11,6 +11,29 @@ module Nexy
       STDIN.noecho(&:gets).chomp
     end
 
+    def ask_yes_or_no(statement, color = :white)
+      response = ask(statement, color)
+      while validate_yes_no(response)
+        say("Your response to that question: #{response} should be a \"y\", \"yes\", \"n\" or \"no\", please enter again.", :yellow)
+        response = ask(statement, color)
+      end
+      response =~ /^y$|^yes$/
+    end
+
+    def ask_yes_or_no_with_default(statement, default='y')
+      responses = ['y', 'n'].map{ |s| s == default ? s.upcase : s }
+      response = ask("#{statement} [#{responses.join}]").downcase
+      response = default if response.empty?
+      response == 'y'
+    end
+
+    private
+
+    def validate_yes_no(string)
+      !(string =~ /^y$|^yes$|^no$|^n$/)
+    end
+
+    # TODO: These should be moved to the create subcommand
     def create_project!(project_configuration)
 
     end
