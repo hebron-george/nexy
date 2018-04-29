@@ -30,7 +30,8 @@ module Nexy
         - Plain old Python\n
     LONGDESC
     def create(*args)
-
+      require 'nexy/cli/create'
+      Nexy::CLI::Create.run(args)
     end
 
     # TODO: Make these subcommands -- http://whatisthor.com/
