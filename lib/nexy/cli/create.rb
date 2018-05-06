@@ -9,5 +9,11 @@ module Nexy
     def run
       ui.say("Let's create a new project!")
     end
+
+    private
+
+    def does_project_already_exist?
+
+    end
   end
 end
