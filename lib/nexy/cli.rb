@@ -35,20 +35,20 @@ module Nexy
     end
 
     # TODO: Make these subcommands -- http://whatisthor.com/
-    desc 'create-ruby-app <name>', 'create a new plain old Ruby project'
-    def create_ruby_app(name)
+    desc 'create-ruby <name>', 'create a new plain old Ruby project'
+    def create_ruby(name)
       type = :ruby.freeze
       config = create_project_config(name: name, type: type)
     end
 
-    desc 'create-rails-app <name>', 'create a new Ruby on Rails application'
-    def create_rails_app(name)
+    desc 'create-rails <name>', 'create a new Ruby on Rails application'
+    def create_rails(name)
       type = :rails.freeze
       config = create_project_config(name: name, type: type)
     end
 
-    desc 'create-python-app <name>', 'create a new plain old Python project'
-    def create_python_app(name)
+    desc 'create-python <name>', 'create a new plain old Python project'
+    def create_python(name)
       type = :python.freeze
       config = create_project_config(name: name, type: type)
     end
